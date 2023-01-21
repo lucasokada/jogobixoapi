@@ -2,7 +2,9 @@ package com.exercicios.jogobixo.core.dominio;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ResultadoDia {
     private LocalDate sorteadoEm;
@@ -24,8 +26,15 @@ public class ResultadoDia {
         this.horarios.put(horario, resultadosNoHorario);
     }
 
+
+    public Set<HorarioJogos> recuperarHorariosPendentes() {
+        Set<HorarioJogos> todosHorarios = new HashSet<>(HorarioJogos.recuperaTodosValores());
+        todosHorarios.removeAll(this.horarios.keySet());
+
+        return todosHorarios;
+    }
+
     public ResultadoDia(LocalDate sorteadoEm) {
         this.sorteadoEm = sorteadoEm;
-
     }
 }

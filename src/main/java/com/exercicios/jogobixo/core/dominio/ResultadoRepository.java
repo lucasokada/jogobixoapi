@@ -5,4 +5,5 @@ import java.util.Optional;
 
 public interface ResultadoRepository {
     Optional<ResultadoDia> consultarPorData(LocalDate filtro);
+    void salvar(ResultadoDia resultadoDia);
 }
