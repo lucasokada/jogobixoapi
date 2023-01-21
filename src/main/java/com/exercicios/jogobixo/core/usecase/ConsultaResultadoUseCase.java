@@ -14,6 +14,6 @@ public class ConsultaResultadoUseCase {
     private ResultadoRepository resultadoRepository;
 
     public Optional<ResultadoDia> consultarPorData(LocalDate filtro) {
-        return Optional.of(new ResultadoDia());
+        return this.resultadoRepository.consultarPorData(filtro);
     }
 }
