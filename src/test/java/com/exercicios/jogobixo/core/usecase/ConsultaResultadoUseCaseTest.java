@@ -1,8 +1,8 @@
 package com.exercicios.jogobixo.core.usecase;
 
-import com.exercicios.jogobixo.core.dominio.HorarioJogos;
 import com.exercicios.jogobixo.core.dominio.ResultadoDia;
 import com.exercicios.jogobixo.core.dominio.ResultadoRepository;
+import com.exercicios.jogobixo.mock.ResultadoDiaMock;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +12,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

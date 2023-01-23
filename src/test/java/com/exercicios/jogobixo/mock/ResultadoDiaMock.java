@@ -1,4 +1,4 @@
-package com.exercicios.jogobixo.core.usecase;
+package com.exercicios.jogobixo.mock;
 
 import com.exercicios.jogobixo.core.dominio.HorarioJogos;
 import com.exercicios.jogobixo.core.dominio.ResultadoDia;

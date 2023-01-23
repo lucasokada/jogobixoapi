@@ -5,6 +5,7 @@ import com.exercicios.jogobixo.core.dominio.HorarioJogos;
 import com.exercicios.jogobixo.core.dominio.ResultadoDia;
 import com.exercicios.jogobixo.core.dominio.ResultadoRepository;
 import com.exercicios.jogobixo.core.dominio.dto.ConsultaResultadoDto;
+import com.exercicios.jogobixo.mock.ResultadoDiaMock;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +14,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
