@@ -1,0 +1,15 @@
+version: '3.1'
+networks:
+  jogobixo-network:
+    driver: bridge
+
+services:
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: jogobixoapi
+    ports:
+      - "3306:3306"
+    networks:
+      - jogobixo-network
