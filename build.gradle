@@ -8,6 +8,13 @@ group = 'com.exercicios'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+
 repositories {
 	mavenCentral()
 }
@@ -20,6 +27,12 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'com.h2database:h2'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation 'com.mysql:mysql-connector-j:8.0.32'
+	implementation 'org.flywaydb:flyway-mysql'
+	implementation 'org.hibernate.orm:hibernate-core:6.2.0.CR1'
 }
 
 tasks.named('test') {
