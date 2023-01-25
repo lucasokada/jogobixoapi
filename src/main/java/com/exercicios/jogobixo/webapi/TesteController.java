@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -33,9 +34,9 @@ public class TesteController {
 
     @GetMapping
     @Transactional
-    public Optional<ResultadoDia> hello() {
+    public ResponseEntity<Optional<ResultadoDia>> hello() {
         resultadoRepository.salvar(mockResultadoDiaCompleto(LocalDate.now()));
-        return resultadoRepository.consultarPorData(LocalDate.now());
+        return ResponseEntity.ok(resultadoRepository.consultarPorData(LocalDate.now()));
     }
 }
 

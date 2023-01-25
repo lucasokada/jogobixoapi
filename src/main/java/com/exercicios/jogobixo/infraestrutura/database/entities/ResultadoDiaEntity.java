@@ -23,7 +23,7 @@ public class ResultadoDiaEntity {
     private LocalDate sorteadoEm;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "resultado_dia_id")
+    @JoinColumn(name = "resultado_dia_id", referencedColumnName = "sorteadoEm" , nullable = false)
     private List<ResultadoHorarioEntity> horarios = new ArrayList<>();
 
     public ResultadoDia toDomain() {
