@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles(value = "test")
+@ActiveProfiles("test")
 @SpringBootTest
 public class DbResultadoRepositoryTest {
     @Autowired

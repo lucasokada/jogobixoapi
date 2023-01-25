@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Entity
-@Table(name = "resultado_dia")
+@Table(name = "[resultado_dia]")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
