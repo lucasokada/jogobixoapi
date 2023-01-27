@@ -3,6 +3,7 @@ package com.exercicios.jogobixo.webapi;
 import com.exercicios.jogobixo.core.dominio.HorarioJogos;
 import com.exercicios.jogobixo.core.dominio.ResultadoDia;
 import com.exercicios.jogobixo.core.dominio.ResultadoRepository;
+import com.exercicios.jogobixo.infraestrutura.proxy.FonteDadoRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,13 @@ public class TesteController {
     @GetMapping
     @Transactional
     public ResponseEntity<Optional<ResultadoDia>> hello() {
+        FonteDadoRest fonteDadoRest = new FonteDadoRest();
+        String diaJogo = fonteDadoRest.recuperaPrimeiroElementoDaTag("p");
+        System.out.println(diaJogo);
+        String resultadoPTM = fonteDadoRest.recuperaPrimeiroElementoDaTag("th#ptm");
+        System.out.println(resultadoPTM);
+        String resultados = fonteDadoRest.recuperaPorTagHtml("tbody tr td");
+        System.out.println(resultados);
         resultadoRepository.salvar(mockResultadoDiaCompleto(LocalDate.now()));
         return ResponseEntity.ok(resultadoRepository.consultarPorData(LocalDate.now()));
     }
