@@ -42,7 +42,7 @@ public class FonteDadosRestTest {
         assertEquals(List.of("7172-18", "4524-6", "0723-6", "5808-2", "1644-11", "9871-18", "446-12"),
                 resultadoPT.get().resultados());
 
-        //assercoes para o resultado PT
+        //assercoes para o resultado COR
         var resultadoCOR = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.COR).findFirst();
         assertTrue(resultadoCOR.isPresent());
         assertEquals(7, resultadoCOR.get().resultados().size());
@@ -61,6 +61,40 @@ public class FonteDadosRestTest {
         assertEquals(0, resultadoConsulta.size());
     }
 
+    @Test
+    public void deveConsultarPorHorarioEObterApenasDoisResultadosValidos() throws IOException {
+        Mockito
+                .when(restProxyMock.getHtmlFromUrl(Mockito.any()))
+                .thenReturn(DataUtil.load(recuperarHtmlMockParcial(), "UTF-8", "http://test.com"));
+
+        var resultadoConsulta = fonteDado.recuperarPorHorario(Set.of(HorarioJogos.PT));
+
+        assertEquals(1, resultadoConsulta.size());
+
+        //assercoes para o resultado PT
+        var resultadoPT = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.PT).findFirst();
+        assertTrue(resultadoPT.isPresent());
+        assertEquals(2, resultadoPT.get().resultados().size());
+        assertEquals(List.of("7172-18", "4524-6"), resultadoPT.get().resultados());
+    }
+
+    @Test
+    public void deveConsultarPorHorarioEObterTodosOsResultadosValidosExcetoOUltimo() throws IOException {
+        Mockito
+                .when(restProxyMock.getHtmlFromUrl(Mockito.any()))
+                .thenReturn(DataUtil.load(recuperarHtmlMockExcetoUltimo(), "UTF-8", "http://test.com"));
+
+        var resultadoConsulta = fonteDado.recuperarPorHorario(Set.of(HorarioJogos.PT));
+
+        assertEquals(1, resultadoConsulta.size());
+
+        //assercoes para o resultado PT
+        var resultadoPT = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.PT).findFirst();
+        assertTrue(resultadoPT.isPresent());
+        assertEquals(6, resultadoPT.get().resultados().size());
+        assertEquals(List.of("7172-18", "4524-6", "0723-6", "5808-2", "1644-11", "9871-18"), resultadoPT.get().resultados());
+    }
+
     private static File recuperarHtmlMock() {
         ClassLoader classLoader = FonteDadosRestTest.class.getClassLoader();
         return new File(Objects.requireNonNull(classLoader.getResource("mockResultadoFonte.html")).getFile());
@@ -69,5 +103,15 @@ public class FonteDadosRestTest {
     private static File recuperarHtmlIncompetoResultadoMock() {
         ClassLoader classLoader = FonteDadosRestTest.class.getClassLoader();
         return new File(Objects.requireNonNull(classLoader.getResource("mockResultadoFonteIncompleto.html")).getFile());
+    }
+
+    private static File recuperarHtmlMockParcial() {
+        ClassLoader classLoader = FonteDadosRestTest.class.getClassLoader();
+        return new File(Objects.requireNonNull(classLoader.getResource("mockResultadoFonteParcial.html")).getFile());
+    }
+
+    private static File recuperarHtmlMockExcetoUltimo() {
+        ClassLoader classLoader = FonteDadosRestTest.class.getClassLoader();
+        return new File(Objects.requireNonNull(classLoader.getResource("mockResultadoFonteExcetoUltimo.html")).getFile());
     }
 }

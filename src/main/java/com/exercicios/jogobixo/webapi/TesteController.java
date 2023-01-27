@@ -35,14 +35,7 @@ public class TesteController {
 
     @GetMapping
     @Transactional
-    public ResponseEntity<Optional<ResultadoDia>> hello() {
-        FonteDadoRest fonteDadoRest = new FonteDadoRest();
-        String diaJogo = fonteDadoRest.recuperaPrimeiroElementoDaTag("p");
-        System.out.println(diaJogo);
-        String resultadoPTM = fonteDadoRest.recuperaPrimeiroElementoDaTag("th#ptm");
-        System.out.println(resultadoPTM);
-        String resultados = fonteDadoRest.recuperaPorTagHtml("tbody tr td");
-        System.out.println(resultados);
+    public ResponseEntity<Optional<ResultadoDia>> hello() {git
         resultadoRepository.salvar(mockResultadoDiaCompleto(LocalDate.now()));
         return ResponseEntity.ok(resultadoRepository.consultarPorData(LocalDate.now()));
     }
