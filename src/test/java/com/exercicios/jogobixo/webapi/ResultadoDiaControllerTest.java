@@ -69,11 +69,11 @@ public class ResultadoDiaControllerTest {
 
     @Test
     public void deveConsultarResultadosComSucesso() throws Exception {
-        LocalDate consultadoEm = LocalDate.of(2023, 1, 29);
-        Mockito.when(consultaResultado.consultarPorData(consultadoEm)).thenReturn(mockConsultaDados(consultadoEm));
-        mvc.perform(get("resultado-dia"))
+        LocalDate resultadoDe = LocalDate.of(2023, 1, 29);
+        Mockito.when(consultaResultado.consultarPorData(resultadoDe)).thenReturn(mockConsultaDados(resultadoDe));
+        mvc.perform(get("/resultado-dia").param("data", "2023-01-29"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.consultadoEm").value("2023-01-29"))
+                .andExpect(jsonPath("$.sorteadoEm").value("2023-01-29"))
                 .andExpect(jsonPath("$.horarios").value(Matchers.containsInAnyOrder("PT", "PTM")));
     }
 }
