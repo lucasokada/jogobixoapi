@@ -20,7 +20,7 @@ public class ImportarResultadoUseCase {
     @Autowired
     FonteResultadoRepository fonteResultadoRepository;
 
-    public void importar() {
+    public ResultadoDia importar() {
         ResultadoDia resultadoDia = resultadoRepository.consultarPorData(LocalDate.now())
             .orElse(new ResultadoDia(LocalDate.now()));
 
@@ -33,5 +33,7 @@ public class ImportarResultadoUseCase {
 
             resultadoRepository.salvar(resultadoDia);
         }
+
+        return resultadoDia;
     }
 }

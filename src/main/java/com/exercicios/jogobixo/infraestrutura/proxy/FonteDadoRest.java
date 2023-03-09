@@ -54,7 +54,6 @@ public class FonteDadoRest implements FonteResultadoRepository {
             if (!resultado.matches("000(.*)-25")) {
                 resultadosBuscados.add(resultado);
             }
-
             i++;
         }
 
