@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -71,9 +72,14 @@ public class ResultadoDiaControllerTest {
     public void deveConsultarResultadosComSucesso() throws Exception {
         LocalDate resultadoDe = LocalDate.of(2023, 1, 29);
         Mockito.when(consultaResultado.consultarPorData(resultadoDe)).thenReturn(mockConsultaDados(resultadoDe));
-        mvc.perform(get("/resultado-dia").param("data", "2023-01-29"))
+        mvc.perform(get("/resultado-dia").param("dataJogo", "2023-01-29"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sorteadoEm").value("2023-01-29"))
                 .andExpect(jsonPath("$.horarios").value(Matchers.containsInAnyOrder("PT", "PTM")));
+    }
+
+    @Test void deveRetornarNullQuandoNaoForEncontradoResultadosNaDataDesejada() throws Exception {
+        mvc.perform(get("/resultado-dia").param("dataJogo", "2023-01-29"))
+                .andExpect(status().isNotFound());
     }
 }
