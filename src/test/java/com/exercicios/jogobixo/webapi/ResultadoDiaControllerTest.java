@@ -15,8 +15,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +42,13 @@ public class ResultadoDiaControllerTest {
         return resultado;
     }
 
+    private static Optional<ResultadoDia> mockConsultaDados(LocalDate consultadoEm) {
+        ResultadoDia resultado = new ResultadoDia(consultadoEm);
+        resultado.inserirResultadoHorario(HorarioJogos.PT, "4222-6");
+        resultado.inserirResultadoHorario(HorarioJogos.PTM, "3556-14");
+        return Optional.of(resultado);
+    }
+
     @Test
     public void deveImportarResultadosComSucesso() throws Exception {
         Mockito.when(importarResultado.importar()).thenReturn(mockImportacaoSucesso(LocalDate.of(2023, 1, 29)));
@@ -56,5 +65,15 @@ public class ResultadoDiaControllerTest {
         mvc.perform(post("/resultado-dia"))
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("$.descricao").value("Erro de Teste!"));
+    }
+
+    @Test
+    public void deveConsultarResultadosComSucesso() throws Exception {
+        LocalDate consultadoEm = LocalDate.of(2023, 1, 29);
+        Mockito.when(consultaResultado.consultarPorData(consultadoEm)).thenReturn(mockConsultaDados(consultadoEm));
+        mvc.perform(get("resultado-dia"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.consultadoEm").value("2023-01-29"))
+                .andExpect(jsonPath("$.horarios").value(Matchers.containsInAnyOrder("PT", "PTM")));
     }
 }

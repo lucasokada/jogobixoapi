@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-02-13T18:15:16" hostname="lnb035161cps" time="0.119">
+<testsuite name="com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-03-09T13:25:44" hostname="lnb035161cps" time="0.181">
   <properties/>
-  <testcase name="naoDeveImportarResultadosQuandoOcorrerErro()" classname="com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest" time="0.119"/>
-  <system-out><![CDATA[15:15:15.699 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [ResultadoDiaControllerTest]: using SpringBootContextLoader
-15:15:15.703 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
-15:15:15.704 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest]: ResultadoDiaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-15:15:15.743 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Using ContextCustomizers for test class [ResultadoDiaControllerTest]: [DisableAutoConfigurationContextCustomizer, DisableObservabilityContextCustomizer, TypeExcludeFiltersContextCustomizer, PropertyMappingContextCustomizer, Customizer, ImportsContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, MockitoContextCustomizer]
-15:15:15.797 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [/home/leiki/Workspace/jogobixoapi/build/classes/java/main/com/exercicios/jogobixo/JogoBixoApplication.class]
-15:15:15.798 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.exercicios.jogobixo.JogoBixoApplication for test class com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest
-15:15:15.810 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Using TestExecutionListeners for test class [ResultadoDiaControllerTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, MockitoTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, EventPublishingTestExecutionListener, RestDocsTestExecutionListener, MockRestServiceServerResetTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockWebServiceServerTestExecutionListener, ResetMocksTestExecutionListener]
-15:15:15.811 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: class [ResultadoDiaControllerTest], class annotated with @DirtiesContext [false] with mode [null]
+  <testcase name="naoDeveImportarResultadosQuandoOcorrerErro()" classname="com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest" time="0.155"/>
+  <testcase name="deveImportarResultadosComSucesso()" classname="com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest" time="0.023"/>
+  <system-out><![CDATA[10:25:43.312 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [ResultadoDiaControllerTest]: using SpringBootContextLoader
+10:25:43.318 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest]: no resource found for suffixes {-context.xml, Context.groovy}.
+10:25:43.318 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest]: ResultadoDiaControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+10:25:43.374 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Using ContextCustomizers for test class [ResultadoDiaControllerTest]: [DisableAutoConfigurationContextCustomizer, DisableObservabilityContextCustomizer, TypeExcludeFiltersContextCustomizer, PropertyMappingContextCustomizer, Customizer, ImportsContextCustomizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, MockitoContextCustomizer]
+10:25:43.441 [Test worker] DEBUG org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider - Identified candidate component class: file [/home/leiki/Workspace/jogobixoapi/build/classes/java/main/com/exercicios/jogobixo/JogoBixoApplication.class]
+10:25:43.442 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.exercicios.jogobixo.JogoBixoApplication for test class com.exercicios.jogobixo.webapi.ResultadoDiaControllerTest
+10:25:43.461 [Test worker] DEBUG org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTestContextBootstrapper - Using TestExecutionListeners for test class [ResultadoDiaControllerTest]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, MockitoTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, TransactionalTestExecutionListener, SqlScriptsTestExecutionListener, EventPublishingTestExecutionListener, RestDocsTestExecutionListener, MockRestServiceServerResetTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockWebServiceServerTestExecutionListener, ResetMocksTestExecutionListener]
+10:25:43.462 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: class [ResultadoDiaControllerTest], class annotated with @DirtiesContext [false] with mode [null]
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -19,12 +20,12 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.0.2)
 
-2023-02-13T15:15:16.043-03:00  INFO 182044 --- [    Test worker] c.e.j.webapi.ResultadoDiaControllerTest  : Starting ResultadoDiaControllerTest using Java 17 with PID 182044 (started by CIANDT\leiki in /home/leiki/Workspace/jogobixoapi)
-2023-02-13T15:15:16.044-03:00  INFO 182044 --- [    Test worker] c.e.j.webapi.ResultadoDiaControllerTest  : No active profile set, falling back to 1 default profile: "default"
-2023-02-13T15:15:16.838-03:00  INFO 182044 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2023-02-13T15:15:16.839-03:00  INFO 182044 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2023-02-13T15:15:16.841-03:00  INFO 182044 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2023-02-13T15:15:16.861-03:00  INFO 182044 --- [    Test worker] c.e.j.webapi.ResultadoDiaControllerTest  : Started ResultadoDiaControllerTest in 1.021 seconds (process running for 1.696)
+2023-03-09T10:25:43.786-03:00  INFO 553769 --- [    Test worker] c.e.j.webapi.ResultadoDiaControllerTest  : Starting ResultadoDiaControllerTest using Java 17 with PID 553769 (started by CIANDT\leiki in /home/leiki/Workspace/jogobixoapi)
+2023-03-09T10:25:43.788-03:00  INFO 553769 --- [    Test worker] c.e.j.webapi.ResultadoDiaControllerTest  : No active profile set, falling back to 1 default profile: "default"
+2023-03-09T10:25:44.915-03:00  INFO 553769 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2023-03-09T10:25:44.916-03:00  INFO 553769 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2023-03-09T10:25:44.919-03:00  INFO 553769 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2023-03-09T10:25:44.945-03:00  INFO 553769 --- [    Test worker] c.e.j.webapi.ResultadoDiaControllerTest  : Started ResultadoDiaControllerTest in 1.442 seconds (process running for 2.293)
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
