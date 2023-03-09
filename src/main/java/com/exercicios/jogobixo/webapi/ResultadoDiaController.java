@@ -1,10 +1,9 @@
 package com.exercicios.jogobixo.webapi;
 
 import com.exercicios.jogobixo.core.dominio.ResultadoDia;
-import com.exercicios.jogobixo.webapi.dto.ResultadoConsultaSucessoDto;
-import com.exercicios.jogobixo.webapi.dto.ResultadoImportacao;
-import com.exercicios.jogobixo.webapi.dto.ResultadoImportacaoFalhoDto;
-import com.exercicios.jogobixo.webapi.dto.ResultadoImportacaoDto;
+import com.exercicios.jogobixo.webapi.dto.ResultadoDiaDto;
+import com.exercicios.jogobixo.webapi.dto.ResultadoDiaFalhoDto;
+import com.exercicios.jogobixo.webapi.dto.ResultadoDiaSucessoDto;
 import com.exercicios.jogobixo.core.usecase.ConsultaResultadoUseCase;
 import com.exercicios.jogobixo.core.usecase.ImportarResultadoUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +25,26 @@ public class ResultadoDiaController {
     ConsultaResultadoUseCase consultaResultado;
 
     @PostMapping
-    public ResponseEntity<ResultadoImportacao> importar() {
+    public ResponseEntity<ResultadoDiaDto> importar() {
         try {
             ResultadoDia resultadoDiaImportado = importarResultado.importar();
-            var resultadoImportacao = new ResultadoImportacaoDto(resultadoDiaImportado);
+            var resultadoImportacao = new ResultadoDiaSucessoDto(resultadoDiaImportado);
 
             return ResponseEntity.ok(resultadoImportacao);
         } catch (Exception e) {
-            var resultadoFalho = new ResultadoImportacaoFalhoDto("Erro de Teste!");
+            var resultadoFalho = new ResultadoDiaFalhoDto("Erro de Teste!");
 
             return ResponseEntity.internalServerError().body(resultadoFalho);
         }
     }
 
     @GetMapping
-    public ResponseEntity<ResultadoConsultaSucessoDto> consultar(@RequestParam(name = "dataJogo", required = true) String dataJogo) {
+    public ResponseEntity<ResultadoDiaDto> consultar(@RequestParam(name = "dataJogo", required = true) String dataJogo) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate dataResultado = LocalDate.parse(dataJogo, formatter);
         Optional<ResultadoDia> resultadoDiaConsultado = consultaResultado.consultarPorData(dataResultado);
         if(resultadoDiaConsultado.isPresent()) {
-            ResultadoConsultaSucessoDto resultado = new ResultadoConsultaSucessoDto(resultadoDiaConsultado.get());
+            ResultadoDiaSucessoDto resultado = new ResultadoDiaSucessoDto(resultadoDiaConsultado.get());
             return ResponseEntity.ok(resultado);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
