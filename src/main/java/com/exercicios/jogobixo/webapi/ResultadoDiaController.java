@@ -33,7 +33,6 @@ public class ResultadoDiaController {
             return ResponseEntity.ok(resultadoImportacao);
         } catch (Exception e) {
             var resultadoFalho = new ResultadoDiaFalhoDto("Erro de Teste!");
-
             return ResponseEntity.internalServerError().body(resultadoFalho);
         }
     }

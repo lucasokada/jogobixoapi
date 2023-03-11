@@ -49,9 +49,9 @@ public class FonteDadoRest implements FonteResultadoRepository {
 
         var resultado = "";
         int i = 0;
-        while(i < resultadosDia.size() && !resultado.matches("000(.*)-25")) {
+        while(i < resultadosDia.size() && !resultado.matches("000(.*)-0")) {
             resultado = resultadosDia.get(i).get(ordemHorario);
-            if (!resultado.matches("000(.*)-25")) {
+            if (!resultado.matches("000(.*)-0")) {
                 resultadosBuscados.add(resultado);
             }
             i++;
