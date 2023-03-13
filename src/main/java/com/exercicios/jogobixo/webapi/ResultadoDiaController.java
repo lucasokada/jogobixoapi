@@ -1,18 +1,18 @@
 package com.exercicios.jogobixo.webapi;
 
 import com.exercicios.jogobixo.core.dominio.ResultadoDia;
+import com.exercicios.jogobixo.core.usecase.ConsultaResultadoUseCase;
+import com.exercicios.jogobixo.core.usecase.ImportarResultadoUseCase;
+import com.exercicios.jogobixo.webapi.dto.ResultadoDiaConsultadoDto;
 import com.exercicios.jogobixo.webapi.dto.ResultadoDiaDto;
 import com.exercicios.jogobixo.webapi.dto.ResultadoDiaFalhoDto;
 import com.exercicios.jogobixo.webapi.dto.ResultadoDiaSucessoDto;
-import com.exercicios.jogobixo.core.usecase.ConsultaResultadoUseCase;
-import com.exercicios.jogobixo.core.usecase.ImportarResultadoUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @RestController
@@ -38,12 +38,10 @@ public class ResultadoDiaController {
     }
 
     @GetMapping
-    public ResponseEntity<ResultadoDiaDto> consultar(@RequestParam(name = "dataJogo", required = true) String dataJogo) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate dataResultado = LocalDate.parse(dataJogo, formatter);
-        Optional<ResultadoDia> resultadoDiaConsultado = consultaResultado.consultarPorData(dataResultado);
+    public ResponseEntity<ResultadoDiaDto> consultar(@RequestParam(name = "dataJogo", required = true) LocalDate resultadoEm) {
+        Optional<ResultadoDia> resultadoDiaConsultado = consultaResultado.consultarPorData(resultadoEm);
         if(resultadoDiaConsultado.isPresent()) {
-            ResultadoDiaSucessoDto resultado = new ResultadoDiaSucessoDto(resultadoDiaConsultado.get());
+            ResultadoDiaConsultadoDto resultado = new ResultadoDiaConsultadoDto(resultadoDiaConsultado.get());
             return ResponseEntity.ok(resultado);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -5,7 +5,7 @@ import java.util.*;
 
 public class ResultadoDia {
     private LocalDate sorteadoEm;
-    private HashMap<HorarioJogos, List<ResultadoHorario>> horarios = new HashMap<>();
+    private HashMap<HorarioJogos, List<ResultadoHorario>> horarios = new LinkedHashMap<>();
 
     public HashMap<HorarioJogos, List<ResultadoHorario>> getHorarios() {
         return horarios;

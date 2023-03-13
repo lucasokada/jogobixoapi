@@ -6,7 +6,6 @@ import com.exercicios.jogobixo.infraestrutura.database.entities.ResultadoDiaEnti
 import com.exercicios.jogobixo.infraestrutura.database.entities.ResultadoDiaJpaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.Optional;

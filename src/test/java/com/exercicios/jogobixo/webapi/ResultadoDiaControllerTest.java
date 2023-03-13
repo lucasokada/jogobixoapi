@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -75,7 +74,10 @@ public class ResultadoDiaControllerTest {
         mvc.perform(get("/resultado-dia").param("dataJogo", "2023-01-29"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sorteadoEm").value("2023-01-29"))
-                .andExpect(jsonPath("$.horarios").value(Matchers.containsInAnyOrder("PT", "PTM")));
+                .andExpect(jsonPath("$.horarios[0].horario").value(("PT")))
+                .andExpect(jsonPath("$.horarios[0].numerosSorteados[0]").value("4222-6"))
+                .andExpect(jsonPath("$.horarios[1].horario").value(("PTM")))
+                .andExpect(jsonPath("$.horarios[1].numerosSorteados[0]").value("3556-14"));
     }
 
     @Test void deveRetornarNullQuandoNaoForEncontradoResultadosNaDataDesejada() throws Exception {
