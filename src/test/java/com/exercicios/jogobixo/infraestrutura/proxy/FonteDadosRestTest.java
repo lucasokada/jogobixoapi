@@ -38,15 +38,15 @@ public class FonteDadosRestTest {
         //assercoes para o resultado PT
         var resultadoPT = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.PT).findFirst();
         assertTrue(resultadoPT.isPresent());
-        assertEquals(7, resultadoPT.get().resultados().size());
-        assertEquals(List.of("7172-18", "4524-6", "0723-6", "5808-2", "1644-11", "9871-18", "446-12"),
+        assertEquals(10, resultadoPT.get().resultados().size());
+        assertEquals(List.of("7172-18", "4524-06", "0723-06", "5808-02", "1644-11", "7405-02", "1578-20", "7220-05", "2438-10", "8512-03"),
                 resultadoPT.get().resultados());
 
         //assercoes para o resultado COR
         var resultadoCOR = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.COR).findFirst();
         assertTrue(resultadoCOR.isPresent());
-        assertEquals(7, resultadoCOR.get().resultados().size());
-        assertEquals(List.of("0947-12", "8273-19", "1176-19", "5896-24", "8905-2", "5197-25", "834-9"),
+        assertEquals(10, resultadoCOR.get().resultados().size());
+        assertEquals(List.of("0947-12", "8273-19", "1176-19", "5896-24", "8905-02", "0815-04", "9218-05", "4779-20", "7366-17", "7375-19"),
                 resultadoCOR.get().resultados());
     }
 
@@ -62,37 +62,41 @@ public class FonteDadosRestTest {
     }
 
     @Test
-    public void deveConsultarPorHorarioEObterApenasDoisResultadosValidos() throws IOException {
+    public void deveConsultarTodosHorariosExcetoUltimo() throws IOException {
         Mockito
                 .when(restProxyMock.getHtmlFromUrl(Mockito.any()))
-                .thenReturn(DataUtil.load(recuperarHtmlMockParcial(), "UTF-8", "http://test.com"));
+                .thenReturn(DataUtil.load(recuperarHtmlExcetoUltimoResultadoMock(), "UTF-8", "http://test.com"));
 
-        var resultadoConsulta = fonteDado.recuperarPorHorario(Set.of(HorarioJogos.PT));
+        var resultadoConsulta = fonteDado.recuperarPorHorario(Set.of(HorarioJogos.COR));
 
-        assertEquals(1, resultadoConsulta.size());
-
-        //assercoes para o resultado PT
-        var resultadoPT = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.PT).findFirst();
-        assertTrue(resultadoPT.isPresent());
-        assertEquals(2, resultadoPT.get().resultados().size());
-        assertEquals(List.of("7172-18", "4524-6"), resultadoPT.get().resultados());
+        assertEquals(0, resultadoConsulta.size());
     }
 
     @Test
-    public void deveConsultarPorHorarioEObterTodosOsResultadosValidosExcetoOUltimo() throws IOException {
+    public void deveManterOrdemResultadosAposConsecutivasConsultas() throws IOException {
         Mockito
                 .when(restProxyMock.getHtmlFromUrl(Mockito.any()))
-                .thenReturn(DataUtil.load(recuperarHtmlMockExcetoUltimo(), "UTF-8", "http://test.com"));
+                .thenReturn(DataUtil.load(recuperarHtmlMock(), "UTF-8", "http://test.com"));
 
-        var resultadoConsulta = fonteDado.recuperarPorHorario(Set.of(HorarioJogos.PT));
+        fonteDado.recuperarPorHorario(Set.of(HorarioJogos.PT, HorarioJogos.COR));
+        fonteDado.recuperarPorHorario(Set.of(HorarioJogos.PT, HorarioJogos.COR));
+        var resultadoConsulta = fonteDado.recuperarPorHorario(Set.of(HorarioJogos.PT, HorarioJogos.COR));
 
-        assertEquals(1, resultadoConsulta.size());
+        assertEquals(2, resultadoConsulta.size());
 
         //assercoes para o resultado PT
         var resultadoPT = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.PT).findFirst();
         assertTrue(resultadoPT.isPresent());
-        assertEquals(6, resultadoPT.get().resultados().size());
-        assertEquals(List.of("7172-18", "4524-6", "0723-6", "5808-2", "1644-11", "9871-18"), resultadoPT.get().resultados());
+        assertEquals(10, resultadoPT.get().resultados().size());
+        assertEquals(List.of("7172-18", "4524-06", "0723-06", "5808-02", "1644-11", "7405-02", "1578-20", "7220-05", "2438-10", "8512-03"),
+                resultadoPT.get().resultados());
+
+        //assercoes para o resultado COR
+        var resultadoCOR = resultadoConsulta.stream().filter(x -> x.horario() == HorarioJogos.COR).findFirst();
+        assertTrue(resultadoCOR.isPresent());
+        assertEquals(10, resultadoCOR.get().resultados().size());
+        assertEquals(List.of("0947-12", "8273-19", "1176-19", "5896-24", "8905-02", "0815-04", "9218-05", "4779-20", "7366-17", "7375-19"),
+                resultadoCOR.get().resultados());
     }
 
     private static File recuperarHtmlMock() {
@@ -105,13 +109,9 @@ public class FonteDadosRestTest {
         return new File(Objects.requireNonNull(classLoader.getResource("mockResultadoFonteIncompleto.html")).getFile());
     }
 
-    private static File recuperarHtmlMockParcial() {
-        ClassLoader classLoader = FonteDadosRestTest.class.getClassLoader();
-        return new File(Objects.requireNonNull(classLoader.getResource("mockResultadoFonteParcial.html")).getFile());
-    }
-
-    private static File recuperarHtmlMockExcetoUltimo() {
+    private File recuperarHtmlExcetoUltimoResultadoMock() {
         ClassLoader classLoader = FonteDadosRestTest.class.getClassLoader();
         return new File(Objects.requireNonNull(classLoader.getResource("mockResultadoFonteExcetoUltimo.html")).getFile());
     }
+
 }

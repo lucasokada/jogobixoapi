@@ -7,71 +7,109 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Component
 public class FonteDadoRest implements FonteResultadoRepository {
     @Autowired
     HttpRestProxy httpRestProxy;
+    private final LocalDate hoje = LocalDate.now();
+    private DateTimeFormatter transformadorAnoMesDia = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private String dataAtual = hoje.format(transformadorAnoMesDia);
+    private final String url = "https://www.resultadofacil.com.br/resultado-do-jogo-do-bicho/RJ/do-dia/" + dataAtual;
+    private final int quantidadeElementosParaUmResultadoPadrao = 4;
+    private final int quantidadeSorteiosPorJogo = 10;
 
-    private final String url = "https://www.eojogodobicho.com/deu-no-poste.html";
+    private List<String> removerResultadosRepetidos(List<String> todosResultados) {
+        final int quantidadeJogosPadronizados = 5;
+        final int quantidadeJogosDespadronizado = 2;
+        final int quantidadeElementosParaResultadosDespadronizados = 3;
+        final int quantidadeSorteios = 10;
+
+        final int quantidadeElementosIgnorados = (quantidadeJogosPadronizados * quantidadeElementosParaUmResultadoPadrao) +
+                (quantidadeJogosDespadronizado * quantidadeElementosParaResultadosDespadronizados);
+        final int quantidadeElementosValidos = (quantidadeSorteios * quantidadeElementosParaUmResultadoPadrao);
+
+        List<String> resultadosModificaveis = new ArrayList<>(todosResultados);
+        List<String> resultadosSemDuplicatas = new ArrayList<>();
+
+        int quantidadeElementosConsumidos = 0;
+        while(quantidadeElementosConsumidos < todosResultados.size()) {
+            resultadosModificaveis.subList(0, quantidadeElementosIgnorados).clear();
+            quantidadeElementosConsumidos += quantidadeElementosIgnorados;
+
+            List<String> list = new ArrayList<>(resultadosModificaveis.subList(0, quantidadeElementosValidos));
+            resultadosModificaveis.subList(0, quantidadeElementosValidos).clear();
+            quantidadeElementosConsumidos += quantidadeElementosValidos;
+
+            resultadosSemDuplicatas.addAll(list);
+        }
+
+        return resultadosSemDuplicatas;
+    }
+
+    private List<String> extrairNumerosSorteadosDoResultado(List<String> resultados) {
+        final int posicaoMilhar = 1, posicaoGrupo = 2;
+
+        List<String> valoresSorteados = new ArrayList<>();
+
+        for(int i = 0; i < resultados.size() - 1; i += quantidadeElementosParaUmResultadoPadrao) {
+            String milhar = resultados.get(i + posicaoMilhar);
+            String grupo = resultados.get(i + posicaoGrupo);
+            valoresSorteados.add(milhar + "-" + grupo);
+        }
+
+        return valoresSorteados;
+    }
 
     private List<List<String>> extrairResultadosDia(String todosResultados) {
-        final int quantidadeJogosDiarios = 7;
-        final int quantidadeSorteios = 5;
-        final int tamanhoListaResultados = (quantidadeSorteios + 1) * quantidadeJogosDiarios;
+        List<String> resultados = Arrays.stream(todosResultados.replaceAll(" +", " ").split(" ")).toList();
+        List<String> resultadosSemDuplicatas = removerResultadosRepetidos(resultados);
+        List<String> valoresSorteados = extrairNumerosSorteadosDoResultado(resultadosSemDuplicatas);
 
-        List<String>resultados = new ArrayList<>(Arrays.stream(todosResultados.split(" ", tamanhoListaResultados + 1)).toList());
-        resultados.remove(resultados.size() - 1);
+        final int quantidadeResultados = valoresSorteados.size();
+        final int quantidadeJogos = quantidadeResultados / quantidadeSorteiosPorJogo;
+        final int quantidadeResultadosPorJogo = quantidadeResultados / quantidadeJogos;
 
-        List<List<String>> resultadosPorSorteio = new ArrayList<>();
+        List<List<String>> resultadosPorJogo = new ArrayList<>();
 
-        int controladorResultados = 0;
-        for (int i = 0; i < quantidadeJogosDiarios; i++) {
-            controladorResultados++;
-            resultadosPorSorteio.add(new ArrayList<>());
-            for(int j = 0; j < quantidadeSorteios; j++) {
-                resultadosPorSorteio.get(i).add(resultados.get(controladorResultados));
-                controladorResultados++;
+        for (int i = 0; i < quantidadeJogos; i++) {
+            resultadosPorJogo.add(new ArrayList<>());
+            for(int j = 0; j < quantidadeResultadosPorJogo; j++) {
+                resultadosPorJogo.get(i).add(valoresSorteados.get((i * quantidadeSorteiosPorJogo) + j));
             }
         }
 
-        return resultadosPorSorteio;
+        return resultadosPorJogo;
     }
 
     private List<String> recuperaResultadoDoHorario(HorarioJogos horario, String todosResultados) {
         final int ordemHorario = HorarioJogos.recuperaListaHorarios().indexOf(horario);
         List<List<String>> resultadosDia = extrairResultadosDia(todosResultados);
-        List<String> resultadosBuscados = new ArrayList<>();
 
-        var resultado = "";
-        int i = 0;
-        while(i < resultadosDia.size() && !resultado.matches("000(.*)-0")) {
-            resultado = resultadosDia.get(i).get(ordemHorario);
-            if (!resultado.matches("000(.*)-0")) {
-                resultadosBuscados.add(resultado);
-            }
-            i++;
+        try {
+            return resultadosDia.get(ordemHorario);
+        } catch (IndexOutOfBoundsException e){
+            return new ArrayList<>();
         }
-
-        return resultadosBuscados;
     }
 
     @Override
     public List<ConsultaResultadoDto> recuperarPorHorario(Set<HorarioJogos> horarios) {
-        Document documentoHtml = httpRestProxy.getHtmlFromUrl(url);
-        String todosResultados = documentoHtml.select("tbody tr td").text();
+        Document conteudoPaginaHtml = httpRestProxy.getHtmlFromUrl(url);
+        String todosResultados = conteudoPaginaHtml.select("tbody tr td").text();
 
         List<ConsultaResultadoDto> resultadosRecuperados = new ArrayList<>();
-        List<HorarioJogos> horariosBuscados = horarios.stream().toList();
+        List<HorarioJogos> resultadosPendentesEm = horarios.stream().toList();
 
-        for (HorarioJogos horariosBuscado : horariosBuscados) {
-            List<String> resultadosHorario = recuperaResultadoDoHorario(horariosBuscado, todosResultados);
-            if (resultadosHorario.size() > 0) {
-                resultadosRecuperados.add(new ConsultaResultadoDto(horariosBuscado, resultadosHorario));
+        if(todosResultados.length() > 1) {
+            for (HorarioJogos resultadoPendenteEm : resultadosPendentesEm) {
+                List<String> resultadosHorario = recuperaResultadoDoHorario(resultadoPendenteEm, todosResultados);
+                if (resultadosHorario.size() > 0) {
+                    resultadosRecuperados.add(new ConsultaResultadoDto(resultadoPendenteEm, resultadosHorario));
+                }
             }
         }
 

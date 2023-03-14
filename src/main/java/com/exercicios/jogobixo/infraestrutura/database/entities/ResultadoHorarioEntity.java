@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Comparator;
+import java.util.Objects;
+
 @Entity
 @Table(name = "[resultado_horario]")
 @AllArgsConstructor
@@ -27,5 +30,18 @@ public class ResultadoHorarioEntity {
         this.resultado = resultado;
         this.codigoHorario = resultadoHorario;
         this.id = this.codigoHorario.toString() + this.ordem;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ResultadoHorarioEntity that = (ResultadoHorarioEntity) o;
+        return ordem == that.ordem && Objects.equals(id, that.id) && Objects.equals(resultado, that.resultado) && codigoHorario == that.codigoHorario;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ordem, resultado, codigoHorario);
     }
 }
