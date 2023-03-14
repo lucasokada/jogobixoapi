@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.exercicios.jogobixo.core.usecase.ImportarResultadoUseCaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-03-13T02:01:56" hostname="lnb035161cps" time="0.024">
-  <properties/>
-  <testcase name="naoDeveImportarQuandoResultadosEstiveremCompletos()" classname="com.exercicios.jogobixo.core.usecase.ImportarResultadoUseCaseTest" time="0.013"/>
-  <testcase name="deveImportarResultadoQuandoExistirNaFonteEComDadoInexistenteNoBanco()" classname="com.exercicios.jogobixo.core.usecase.ImportarResultadoUseCaseTest" time="0.004"/>
-  <testcase name="deveImportarResultadoQuandoExistirNaFonteEComDadoExistenteNoBanco()" classname="com.exercicios.jogobixo.core.usecase.ImportarResultadoUseCaseTest" time="0.004"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
