@@ -20,12 +20,14 @@ public class DbResultadoRepository implements ResultadoRepository {
     @Override
     public Optional<ResultadoDia> consultarPorData(LocalDate filtro) {
         var resultadoDia = this.resultadoDiaJpaRepository.findById(filtro);
-        resultadoDia.get().getHorarios().sort(new Comparator<ResultadoHorarioEntity>() {
-            @Override
-            public int compare(ResultadoHorarioEntity o1, ResultadoHorarioEntity o2) {
-                return o1.getOrdem() - o2.getOrdem();
-            }
-        });
+        if(resultadoDia.isPresent()) {
+            resultadoDia.get().getHorarios().sort(new Comparator<ResultadoHorarioEntity>() {
+                @Override
+                public int compare(ResultadoHorarioEntity o1, ResultadoHorarioEntity o2) {
+                    return o1.getOrdem() - o2.getOrdem();
+                }
+            });
+        }
 
         return resultadoDia.map(ResultadoDiaEntity::toDomain);
     }
