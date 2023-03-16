@@ -21,6 +21,7 @@ public class ResultadoDia {
                 .toList();
 
         this.horarios.put(horario, resultadosNoHorario);
+
     }
 
     public void inserirResultadoHorario(HorarioJogos horario, String resultado) {

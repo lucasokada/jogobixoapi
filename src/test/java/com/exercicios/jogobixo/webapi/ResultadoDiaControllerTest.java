@@ -44,8 +44,18 @@ public class ResultadoDiaControllerTest {
 
     private static Optional<ResultadoDia> mockConsultaDados(LocalDate consultadoEm) {
         ResultadoDia resultado = new ResultadoDia(consultadoEm);
-        resultado.inserirResultadoHorario(HorarioJogos.PT, "4222-6");
+        resultado.inserirResultadoHorario(HorarioJogos.PT, "4222-06");
         resultado.inserirResultadoHorario(HorarioJogos.PTM, "3556-14");
+        return Optional.of(resultado);
+    }
+
+    private static Optional<ResultadoDia> mockConsultaDadosCompleto(LocalDate consultadoEm) {
+        ResultadoDia resultado = new ResultadoDia(consultadoEm);
+        resultado.inserirResultadoHorario(HorarioJogos.PT, "4222-06");
+        resultado.inserirResultadoHorario(HorarioJogos.PTM, "3556-14");
+        resultado.inserirResultadoHorario(HorarioJogos.PTV, "2201-01");
+        resultado.inserirResultadoHorario(HorarioJogos.COR, "0947-12");
+        resultado.inserirResultadoHorario(HorarioJogos.FED, "7936-09");
         return Optional.of(resultado);
     }
 
@@ -74,10 +84,24 @@ public class ResultadoDiaControllerTest {
         mvc.perform(get("/resultado-dia").param("dataJogo", "2023-01-29"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.sorteadoEm").value("2023-01-29"))
-                .andExpect(jsonPath("$.horarios[0].horario").value(("PT")))
-                .andExpect(jsonPath("$.horarios[0].numerosSorteados[0]").value("4222-6"))
-                .andExpect(jsonPath("$.horarios[1].horario").value(("PTM")))
-                .andExpect(jsonPath("$.horarios[1].numerosSorteados[0]").value("3556-14"));
+                .andExpect(jsonPath("$.horarios[0].horario").value(("PTM")))
+                .andExpect(jsonPath("$.horarios[0].numerosSorteados[0]").value("3556-14"))
+                .andExpect(jsonPath("$.horarios[1].horario").value(("PT")))
+                .andExpect(jsonPath("$.horarios[1].numerosSorteados[0]").value("4222-06"));
+    }
+
+    @Test
+    public void deveManterOrdemDosHorariosDosResultadosConsultados() throws Exception {
+        LocalDate resultadoDe = LocalDate.of(2023, 1, 29);
+        Mockito.when(consultaResultado.consultarPorData(resultadoDe)).thenReturn(mockConsultaDadosCompleto(resultadoDe));
+        mvc.perform(get("/resultado-dia").param("dataJogo", "2023-01-29"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sorteadoEm").value("2023-01-29"))
+                .andExpect(jsonPath("$.horarios[0].horario").value(("PTM")))
+                .andExpect(jsonPath("$.horarios[1].horario").value(("PT")))
+                .andExpect(jsonPath("$.horarios[2].horario").value(("PTV")))
+                .andExpect(jsonPath("$.horarios[3].horario").value(("FED")))
+                .andExpect(jsonPath("$.horarios[4].horario").value(("COR")));
     }
 
     @Test void deveRetornarNullQuandoNaoForEncontradoResultadosNaDataDesejada() throws Exception {

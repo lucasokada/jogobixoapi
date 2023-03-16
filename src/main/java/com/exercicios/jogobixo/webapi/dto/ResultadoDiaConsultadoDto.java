@@ -6,6 +6,7 @@ import com.exercicios.jogobixo.core.dominio.ResultadoHorario;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public record ResultadoDiaConsultadoDto(
@@ -30,9 +31,16 @@ public record ResultadoDiaConsultadoDto(
     }
 
     private static List<ResultadoHorarioDto> extraiDe(ResultadoDia dominio) {
-        List<ResultadoHorarioDto> resultados = dominio.getHorarios().keySet().stream().map(horarioJogo ->
+        List<ResultadoHorarioDto> resultados = new ArrayList<>(dominio.getHorarios().keySet().stream().map(horarioJogo ->
                 new ResultadoHorarioDto(horarioJogo, dominio.getHorarios().get(horarioJogo).stream()
-                        .map(ResultadoHorario::resultado).toList())).toList();
+                        .map(ResultadoHorario::resultado).toList())).toList());
+
+        resultados.sort(new Comparator<ResultadoHorarioDto>() {
+            @Override
+            public int compare(ResultadoHorarioDto o1, ResultadoHorarioDto o2) {
+                return o1.horario().getOrdem() - o2.horario().getOrdem();
+            }
+        });
 
         return resultados;
     }
