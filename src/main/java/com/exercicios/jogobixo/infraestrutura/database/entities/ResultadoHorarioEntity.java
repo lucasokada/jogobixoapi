@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -29,7 +31,8 @@ public class ResultadoHorarioEntity {
         this.ordem = ordem;
         this.resultado = resultado;
         this.codigoHorario = resultadoHorario;
-        this.id = this.codigoHorario.toString() + this.ordem;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.id = this.codigoHorario.toString() + this.ordem + LocalDate.now().format(formatter);
     }
 
     @Override
