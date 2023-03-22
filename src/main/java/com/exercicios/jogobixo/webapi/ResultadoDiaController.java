@@ -10,6 +10,7 @@ import com.exercicios.jogobixo.webapi.dto.ResultadoDiaSucessoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/resultado-dia")
 public class ResultadoDiaController {
+
     @Autowired
     ImportarResultadoUseCase importarResultado;
 
@@ -25,7 +27,13 @@ public class ResultadoDiaController {
     ConsultaResultadoUseCase consultaResultado;
 
     @PostMapping
+    @Scheduled(cron = "0 50 11 * * *")
+    @Scheduled(cron = "0 10 15 * * *")
+    @Scheduled(cron = "0 50 16 * * *")
+    @Scheduled(cron = "0 10 22 * * *")
+    @Scheduled(cron = "0 0 23 * * *")
     public ResponseEntity<ResultadoDiaDto> importar() {
+        System.out.println("CHAMOU!!");
         try {
             ResultadoDia resultadoDiaImportado = importarResultado.importar();
             var resultadoImportacao = new ResultadoDiaSucessoDto(resultadoDiaImportado);
