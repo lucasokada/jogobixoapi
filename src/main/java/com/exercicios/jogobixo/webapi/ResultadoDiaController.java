@@ -33,7 +33,6 @@ public class ResultadoDiaController {
     @Scheduled(cron = "0 10 22 * * *")
     @Scheduled(cron = "0 0 23 * * *")
     public ResponseEntity<ResultadoDiaDto> importar() {
-        System.out.println("CHAMOU!!");
         try {
             ResultadoDia resultadoDiaImportado = importarResultado.importar();
             var resultadoImportacao = new ResultadoDiaSucessoDto(resultadoDiaImportado);
