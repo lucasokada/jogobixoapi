@@ -7,6 +7,7 @@ import com.exercicios.jogobixo.webapi.dto.ResultadoDiaConsultadoDto;
 import com.exercicios.jogobixo.webapi.dto.ResultadoDiaDto;
 import com.exercicios.jogobixo.webapi.dto.ResultadoDiaFalhoDto;
 import com.exercicios.jogobixo.webapi.dto.ResultadoDiaSucessoDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ public class ResultadoDiaController {
     @Scheduled(cron = "0 10 22 * * *")
     @Scheduled(cron = "0 0 23 * * *")
     public ResponseEntity<ResultadoDiaDto> importar() {
+        System.out.println("Importando!!");
         try {
             ResultadoDia resultadoDiaImportado = importarResultado.importar();
             var resultadoImportacao = new ResultadoDiaSucessoDto(resultadoDiaImportado);

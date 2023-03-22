@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EntityScan
 @EnableAutoConfiguration
+@EnableScheduling
 public class JogoBixoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JogoBixoApplication.class, args);
