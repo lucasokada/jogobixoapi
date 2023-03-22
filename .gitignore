@@ -106,3 +106,7 @@ fabric.properties
 #build
 .build/*
 build/*
+
+#.idea
+.idea/*
+.idea
