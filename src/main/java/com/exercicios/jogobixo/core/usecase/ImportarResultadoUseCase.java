@@ -6,7 +6,9 @@ import com.exercicios.jogobixo.core.dominio.ResultadoHorario;
 import com.exercicios.jogobixo.core.dominio.ResultadoRepository;
 import com.exercicios.jogobixo.core.dominio.dto.ConsultaResultadoDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
